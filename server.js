@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // GET Route for homepage
-app.get('*', (req, res) =>
+app.get('/', (req, res) =>
     res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
@@ -36,7 +36,7 @@ app.get('/api/notes', (req, res) => {
     })
 });
 
-//POST /api/notes
+// POST /api/notes
 app.post('/api/notes', (req, res) => {
     const {title, text} = req.body;
 
@@ -46,20 +46,23 @@ app.post('/api/notes', (req, res) => {
             text,
             note_id: uuidv4(),
         };
-        fs.readFile('./db/db.json', (err, data) => {
+
+        fs.readFile('./db/db.json', "utf8", (err, data) => {
             if (err) {
                 console.error(err);
             } else {
-                const newNote = JSON.parse(data);
-                newNote.push(note);
-                fs.writeFile('./db/db.json', JSON.stringify(note, null), (err) =>
-                    err ? console.error(err) : console.log(`\nData written to ${destination}`)
-                );
+                var note = JSON.parse(data);
+                note.push(newNote);
 
-                res.status(200).json(response)
-            }
+                fs.writeFile('./db/db.json', JSON.stringify(note, null, 2), (err) =>
+                    err ? console.error(err) : console.log(`Data written to ./db/db.json`)
+                );
+            };
         });
-    };
+        res.json('note added successfully');
+    } else {
+        res.error('error in adding note')
+    }
 });
 
 app.listen(PORT, () =>

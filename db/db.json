@@ -1,6 +1,17 @@
 [
-    {
-        "title":"Test Title",
-        "text":"Test text"
-    }
+  {
+    "title": "I am a title",
+    "text": "And I am the text",
+    "note_id": "3fe5d166-2f9e-4e3d-87a7-25a561207c6c"
+  },
+  {
+    "title": "test 2",
+    "text": "test text 2",
+    "note_id": "ece24dbc-5c88-43ca-84ef-80f48b155bf4"
+  },
+  {
+    "title": "New note 3",
+    "text": "A new note",
+    "note_id": "61813917-d0af-4b88-8909-9538e44d0358"
+  }
 ]
