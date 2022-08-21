@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const api = require('./routes/index.js');
+const fs = require("fs");
+const { v4: uuidv4 } = require('uuid');
 
 const PORT = process.env.PORT || 3001;
 
@@ -24,8 +25,42 @@ app.get('/notes', (req, res) =>
 
 
 // GET /api/notes
+app.get('/api/notes', (req, res) => {
+    fs.readFile('./db/db.json', (err, data) => {
+        if (err) {
+            console.error(err);
+        } else {
+            const savedNotes = JSON.parse(data);
+            res.json(savedNotes);
+        }
+    })
+});
 
 //POST /api/notes
+app.post('/api/notes', (req, res) => {
+    const {title, text} = req.body;
+
+    if(req.body) {
+        newNote = {
+            title,
+            text,
+            note_id: uuidv4(),
+        };
+        fs.readFile('./db/db.json', (err, data) => {
+            if (err) {
+                console.error(err);
+            } else {
+                const newNote = JSON.parse(data);
+                newNote.push(note);
+                fs.writeFile('./db/db.json', JSON.stringify(note, null), (err) =>
+                    err ? console.error(err) : console.log(`\nData written to ${destination}`)
+                );
+
+                res.status(200).json(response)
+            }
+        });
+    };
+});
 
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT}`)
